@@ -3,6 +3,7 @@ const express = require("express");
 // Import module CORS để cho phép giao tiếp giữa các nguồn gốc khác nhau (Cross-Origin Resource Sharing)
 const cors = require("cors");
 
+const contactsRouter = require("./app/routes/contact.route");
 
 // Khởi tạo một ứng dụng Express
 const app = express()
@@ -18,6 +19,7 @@ app.get("/", (req, res) => {
     res.json({ message: "Welcome to contact book application"});
 });
 
+app.use("/api/contacts", contactsRouter);
 
 // Xuất module `app` để có thể sử dụng ở file khác (ví dụ: để khởi chạy server)
 module.exports = app;
