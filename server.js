@@ -1,15 +1,20 @@
-// Import ứng dụng Express từ file app.js (hoặc app.ts nếu dùng TypeScript)
 const app = require("./app");
-// Import file cấu hình (config) để lấy thông tin cấu hình ứng dụng, ví dụ như PORT
 const config = require("./app/config");
+const MongoDB = require("./app/utils/mongodb.util");
 
-//start server
-// Khai báo biến PORT, lấy giá trị cổng từ file cấu hình
-const PORT = config.app.port;
+async function startServer() {
+    try {
+        await MongoDB.connect(config.db.uri);
+        console.log("Connected to the database!");
 
-// Bắt đầu server và lắng nghe trên cổng PORT
-app.listen(PORT,()=>{
+        const PORT = config.app.port;
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+    } catch (error) {
+        console.log("Cannot connect to the database!", error);
+        process.exit();
+    }
+}
 
-// In ra console để thông báo rằng server đã chạy thành công
-    console.log(`Server is running on port ${PORT}.`);
-});
+startServer();
